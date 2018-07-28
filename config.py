@@ -42,3 +42,5 @@ telegram_rmsc = data['telegram_rmsc']
 ignore_amount = data['ignore_amount']
 
 target_price = data['target_price']
+
+sample_size = data['sample_size']

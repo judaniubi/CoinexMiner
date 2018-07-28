@@ -57,6 +57,10 @@ def init_logger():
 def calculate_variance(_private_api):
 	data = _private_api.get_latest_transaction(config.market)
 	data = data['data']
+
+	if config.sample_size < len(data) and config.sample_size > 2:
+		data = data[0:config.sample_size]
+		
 	_sum = 0
 	for x in data:
 		_sum = _sum + float(x['price'])

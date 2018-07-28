@@ -92,6 +92,10 @@ ignore_amount = 0
 
 比如在CDYBCH交易对中 设置这个值为10 意味着 只要盘口买一卖一的数量小于10个 就会忽略该小额单继续挖矿
 
+sample_size = 500
+
+波动方差采样数量 默认500 觉得波动率检测不够敏感的可以 适当调小
+
 telegram_notify : false
 
 telegram通知 默认不启用 不用的话 telegram开头的参数都可以不用管
