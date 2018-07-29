@@ -276,6 +276,7 @@ def update_balance():
 def balance_cost():
 	if records['money_fees'] < 0.0001 or records['goods_fees'] < 0.0001 :
 		logging.info('no need to balance the cost')
+		records['predict_cet'] = 0
 		return
 
 	goods_markets = config.market
