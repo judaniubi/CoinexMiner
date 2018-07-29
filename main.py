@@ -273,10 +273,25 @@ def update_balance():
 	logging.info('cet_available: %0.3f' % records['cet_available'])
 	logging.info('money_available: %0.3f' % records['money_available'])
 
+def record_mined_cet():
+
+	cur_hour = time.strftime("%Y-%m-%d %H", time.localtime())
+
+	item = '%s mined %0.3f CET\r\n' % (cur_hour,records['predict_cet'])
+	logging.info(item)
+
+	if config.telegram_notify:
+		send_message(item)
+		
+	with open('records.txt', 'a+') as f:
+	    f.write(item)
+
+	records['predict_cet'] = 0
+	
 def balance_cost():
 	if records['money_fees'] < 0.0001 or records['goods_fees'] < 0.0001 :
 		logging.info('no need to balance the cost')
-		records['predict_cet'] = 0
+		record_mined_cet()
 		return
 
 	goods_markets = config.market
@@ -301,18 +316,7 @@ def balance_cost():
 	_private_api.sell(amount,price,money_markets)
 	records['money_fees'] = 0
 	
-	cur_hour = time.strftime("%Y-%m-%d %H", time.localtime())
-
-	item = '%s mined %0.3f CET\r\n' % (cur_hour,records['predict_cet'])
-	logging.info(item)
-
-	if config.telegram_notify:
-		send_message(item)
-		
-	with open('records.txt', 'a+') as f:
-	    f.write(item)
-
-	records['predict_cet'] = 0
+	record_mined_cet()
 
 
 init_logger()
