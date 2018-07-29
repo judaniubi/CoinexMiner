@@ -102,7 +102,7 @@ def check_order_state(_type,data):
 
 			records['predict_cet'] = total_money / tmp_data['tprice_cet_money']
 
-			logging.info('mined %0.2f cet; %0.4f m costed; %0.4f g costed' % (records['predict_cet'],records['money_fees'],records['goods_fees']))
+			logging.info('mined %0.2f cet; %0.8f m costed; %0.8f g costed' % (records['predict_cet'],records['money_fees'],records['goods_fees']))
 			
 
 			pickle.dump(records,open('cache.data','wb'))
@@ -123,9 +123,9 @@ def check_order_state(_type,data):
 		elapsed_time = time.time() - start_time
 		if elapsed_time > 60*config.wait_order:
 			if _type == 'sell':
-				records['money_fees'] = records['money_fees'] + float(data['deal_fee'])
+				records['money_fees'] = records['money_fees'] + float(data['deal_money'])*0.001
 			else:
-				records['goods_fees'] = records['goods_fees'] + float(data['deal_fee'])
+				records['goods_fees'] = records['goods_fees'] + float(data['deal_amount'])*0.001
 			return 'timeout'
 
 		if index < 3:
