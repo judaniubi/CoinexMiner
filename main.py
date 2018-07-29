@@ -93,9 +93,9 @@ def check_order_state(_type,data):
 	while True:
 		if left_amout == 0 or left_amout <= config.ignore_amount:
 			if _type == 'sell':
-				records['money_fees'] = records['money_fees'] + float(data['deal_money'])*0.001
+				records['money_fees'] = records['money_fees'] + float(data['price'])*float(data['amount'])*0.001
 			else:
-				records['goods_fees'] = records['goods_fees'] + float(data['deal_amount'])*0.001
+				records['goods_fees'] = records['goods_fees'] + float(data['amount'])*0.001
 
 			total_money = tmp_data['tprice_goods_money'] * records['goods_fees']
 			total_money = total_money + records['money_fees']
@@ -123,9 +123,9 @@ def check_order_state(_type,data):
 		elapsed_time = time.time() - start_time
 		if elapsed_time > 60*config.wait_order:
 			if _type == 'sell':
-				records['money_fees'] = records['money_fees'] + float(data['deal_money'])*0.001
+				records['money_fees'] = records['money_fees'] + float(data['price'])*float(data['amount'])*0.001
 			else:
-				records['goods_fees'] = records['goods_fees'] + float(data['deal_amount'])*0.001
+				records['goods_fees'] = records['goods_fees'] + float(data['amount'])*0.001
 			return 'timeout'
 
 		if index < 3:
