@@ -93,9 +93,9 @@ def check_order_state(_type,data):
 	while True:
 		if left_amout == 0 or left_amout <= config.ignore_amount:
 			if _type == 'sell':
-				records['money_fees'] = records['money_fees'] + float(data['deal_fee'])
+				records['money_fees'] = records['money_fees'] + float(data['deal_money'])*0.001
 			else:
-				records['goods_fees'] = records['goods_fees'] + float(data['deal_fee'])
+				records['goods_fees'] = records['goods_fees'] + float(data['deal_amount'])*0.001
 
 			total_money = tmp_data['tprice_goods_money'] * records['goods_fees']
 			total_money = total_money + records['money_fees']
@@ -287,7 +287,7 @@ def record_mined_cet():
 	    f.write(item)
 
 	records['predict_cet'] = 0
-	
+
 def balance_cost():
 	if records['money_fees'] < 0.0001 or records['goods_fees'] < 0.0001 :
 		logging.info('no need to balance the cost')
