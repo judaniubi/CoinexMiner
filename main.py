@@ -274,6 +274,8 @@ def update_balance():
 	logging.info('money_available: %0.3f' % records['money_available'])
 
 def record_mined_cet():
+	if records['predict_cet'] == 0:
+		return
 
 	cur_hour = time.strftime("%Y-%m-%d %H", time.localtime())
 
