@@ -26,6 +26,8 @@
 
 	"sample_size" : 500,
 
+	"cet_as_fee" : false,
+
 	"telegram_notify" : false,
 
 	"telegram_chatid" : "12345",

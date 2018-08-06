@@ -74,52 +74,78 @@ class PrivateAPI(object):
 
     def buy(self, amount, price, market):
         """Create a buy limit order"""
-        request_client = RequestClient()
 
-        data = {
-                "amount": "%.8f" % (amount),
-                "price": "%.8f" % (price),
-                "type": "buy",
-                "market": market
-            }
+        data = {}
+        i = 0
 
-        response = request_client.request(
-                'POST',
-                'https://api.coinex.com/v1/order/limit',
-                json=data,
-        )
+        while i < 4:
+            i = i + 1
+            try:
+                request_client = RequestClient()
 
-        if response != None:
-            data = complex_json.loads(response.text)
-            if data["code"] != 0:
-                raise Exception(data["message"])
-            elif "data" in data:         
-                return data
+                data = {
+                        "amount": "%.8f" % (amount),
+                        "price": "%.8f" % (price),
+                        "type": "buy",
+                        "market": market
+                    }
+
+                response = request_client.request(
+                        'POST',
+                        'https://api.coinex.com/v1/order/limit',
+                        json=data,
+                )
+
+
+                data = complex_json.loads(response.text)
+            except Exception as e:
+                logging.error(e)
+                time.sleep(3)
+                continue
+            break
+
+        if data["code"] != 0:
+            raise Exception(data["message"])
+        elif "data" in data:         
+            return data
 
 
     def sell(self, amount, price, market):
         """Create a sell limit order"""
-        request_client = RequestClient()
 
-        data = {
-                "amount": "%.8f" % (amount),
-                "price": "%.8f" % (price),
-                "type": "sell",
-                "market": market
-            }
+        data = {}
+        i = 0
 
-        response = request_client.request(
-                'POST',
-                'https://api.coinex.com/v1/order/limit',
-                json=data,
-        )
+        while i < 4:
+            i = i + 1
+            try:
+                request_client = RequestClient()
 
-        if response != None:
-            data = complex_json.loads(response.text)
-            if data["code"] != 0:
-                raise Exception(data["message"])
-            elif "data" in data:         
-                return data
+                data = {
+                        "amount": "%.8f" % (amount),
+                        "price": "%.8f" % (price),
+                        "type": "sell",
+                        "market": market
+                    }
+
+                response = request_client.request(
+                        'POST',
+                        'https://api.coinex.com/v1/order/limit',
+                        json=data,
+                )
+
+
+                data = complex_json.loads(response.text)
+            except Exception as e:
+                logging.error(e)
+                time.sleep(3)
+                continue
+            break
+
+        if data["code"] != 0:
+            raise Exception(data["message"])
+        elif "data" in data:         
+            return data
 
     def get_balances(self):
         """Get balance"""

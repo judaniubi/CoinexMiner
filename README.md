@@ -99,6 +99,10 @@ sample_size = 500
 
 波动方差采样数量 默认500 觉得波动率检测不够敏感的可以 适当调小
 
+cet_as_fee = false
+
+是否开启cet抵扣手续费 默认关闭 建议开启 这样可以减少cet抛盘 (注意！开启此功能需手动配合打开coinex面板使用cet抵扣手续费)
+
 telegram_notify : false
 
 telegram通知 默认不启用 不用的话 telegram开头的参数都可以不用管
