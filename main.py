@@ -285,10 +285,7 @@ def record_mined_cet():
 	cur_hour = time.strftime("%Y-%m-%d %H", time.localtime())
 
 	item = '%s mined %0.3f CET\r\n' % (cur_hour,records['predict_cet'])
-	logging.info(item)
-
-	if config.telegram_notify:
-		send_message(item)
+	logging.info(send_message(item))
 		
 	with open('records.txt', 'a+') as f:
 	    f.write(item)
@@ -334,9 +331,7 @@ def main():
 	global records
 	
 	welcome = 'CoinexMiner Started!'
-	logging.info(welcome)
-	if config.telegram_notify:
-		send_message(welcome)
+	logging.info(send_message(welcome))
 
 	try:
 		records = pickle.load(open('cache.data','rb'))
@@ -420,8 +415,7 @@ if __name__ == "__main__":
 			main()
 		except Exception as e:
 			logging.error(str(e))
-			if config.telegram_notify:
-				send_message('CoinexMiner: ' + str(e) + ', restarting in 1 min')
+			send_message('CoinexMiner: ' + str(e) + ', restarting in 1 min')
 			time.sleep(60)
 
 	
