@@ -103,6 +103,11 @@ cet_as_fee = false
 
 是否开启cet抵扣手续费 默认关闭 建议开启 这样可以减少cet抛盘 (注意！开启此功能需手动配合打开coinex面板使用cet抵扣手续费)
 
+	
+VIP_membership = 1
+
+If you have a VIP membership please set it here VIP1,VIP2,VIP3 or leave 1 for none (有VIP权限就设置 没有就设置成1)
+
 telegram_notify : false
 
 telegram通知 默认不启用 不用的话 telegram开头的参数都可以不用管

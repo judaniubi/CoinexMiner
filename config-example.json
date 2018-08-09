@@ -27,8 +27,7 @@
 	"sample_size" : 500,
 
 	"cet_as_fee" : false,
-	
-	"VIP_membership_description" : "If you have a VIP membership please set it here VIP1,VIP2,VIP3 or leave 1 for none",
+
 	"VIP_membership" : "1",
 
 	"telegram_notify" : false,
