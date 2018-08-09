@@ -39,19 +39,19 @@ def get_self_cet_prediction():
 	tmp_data['tprice_goods_money'] = float(data['ticker']['sell'])
 
 def init_logger():
-    logging.VERBOSE = 15
-    logging.verbose = lambda x: logging.log(logging.VERBOSE, x)
-    logging.addLevelName(logging.VERBOSE, "VERBOSE")
+		logging.VERBOSE = 15
+		logging.verbose = lambda x: logging.log(logging.VERBOSE, x)
+		logging.addLevelName(logging.VERBOSE, "VERBOSE")
 
-    level = logging.INFO
+		level = logging.INFO
  
-    logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',
-                        level=level)
+		logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',
+												level=level)
 
-    fh = logging.FileHandler('./log.txt')
-    formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s')
-    fh.setFormatter(formatter)
-    logging.getLogger('').addHandler(fh)
+		fh = logging.FileHandler('./log.txt')
+		formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s')
+		fh.setFormatter(formatter)
+		logging.getLogger('').addHandler(fh)
 
 
 def calculate_variance(_private_api):
@@ -78,6 +78,12 @@ def calculate_variance(_private_api):
 
 	return _variance
 
+def VIP_Redcution(VIPStatus):
+		return {
+				'VIP1' : 0.2,
+				'VIP2' : 0.5,
+				'VIP3' : 0.8,
+		}[VIPStatus]
 
 def check_order_state(_type,data):
 	data = data['data']
@@ -94,6 +100,8 @@ def check_order_state(_type,data):
 
 	if config.cet_as_fee:
 		fee_scale = 0.5
+		
+	fee_scale = fee_scale * VIP_Redcution(config.VIP_membership)
 
 	while True:
 		if left_amout == 0 or left_amout <= config.ignore_amount:
@@ -288,7 +296,7 @@ def record_mined_cet():
 	logging.info(send_message(item))
 		
 	with open('records.txt', 'a+') as f:
-	    f.write(item)
+			 f.write(item)
 
 	records['predict_cet'] = 0
 
