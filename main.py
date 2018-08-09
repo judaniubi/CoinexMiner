@@ -80,6 +80,7 @@ def calculate_variance(_private_api):
 
 def VIP_Redcution(VIPStatus):
 		return {
+				'1' : 1.0,
 				'VIP1' : 0.2,
 				'VIP2' : 0.5,
 				'VIP3' : 0.8,
