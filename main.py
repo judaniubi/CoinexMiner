@@ -39,19 +39,19 @@ def get_self_cet_prediction():
 	tmp_data['tprice_goods_money'] = float(data['ticker']['sell'])
 
 def init_logger():
-		logging.VERBOSE = 15
-		logging.verbose = lambda x: logging.log(logging.VERBOSE, x)
-		logging.addLevelName(logging.VERBOSE, "VERBOSE")
+	logging.VERBOSE = 15
+	logging.verbose = lambda x: logging.log(logging.VERBOSE, x)
+	logging.addLevelName(logging.VERBOSE, "VERBOSE")
 
-		level = logging.INFO
- 
-		logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',
-												level=level)
+	level = logging.INFO
 
-		fh = logging.FileHandler('./log.txt')
-		formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s')
-		fh.setFormatter(formatter)
-		logging.getLogger('').addHandler(fh)
+	logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',
+											level=level)
+
+	fh = logging.FileHandler('./log.txt')
+	formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s')
+	fh.setFormatter(formatter)
+	logging.getLogger('').addHandler(fh)
 
 
 def calculate_variance(_private_api):
