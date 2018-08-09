@@ -85,6 +85,16 @@ def VIP_Redcution(VIPStatus):
 				'VIP3' : 0.8,
 		}[VIPStatus]
 
+def calculate_fee(fee):
+	
+	fee_scale = 1.0
+
+	if config.cet_as_fee:
+		fee_scale = 0.5
+		
+	fee_scale = fee_scale * VIP_Redcution(config.VIP_membership)
+	return fee*fee_scale
+
 def check_order_state(_type,data):
 	data = data['data']
 
@@ -96,19 +106,14 @@ def check_order_state(_type,data):
 
 	index = 0
 
-	fee_scale = 1.0
-
-	if config.cet_as_fee:
-		fee_scale = 0.5
-		
-	fee_scale = fee_scale * VIP_Redcution(config.VIP_membership)
-
+	calculated_fee = calculate_fee(0.001)
+	
 	while True:
 		if left_amout == 0 or left_amout <= config.ignore_amount:
 			if _type == 'sell':
-				records['money_fees'] = records['money_fees'] + float(data['price'])*float(data['amount'])*0.001*fee_scale
+				records['money_fees'] = records['money_fees'] + float(data['price'])*float(data['amount'])*calculated_fee
 			else:
-				records['goods_fees'] = records['goods_fees'] + float(data['amount'])*0.001*fee_scale
+				records['goods_fees'] = records['goods_fees'] + float(data['amount'])*calculated_fee
 
 			total_money = tmp_data['tprice_goods_money'] * records['goods_fees']
 			total_money = total_money + records['money_fees']
@@ -136,9 +141,9 @@ def check_order_state(_type,data):
 		elapsed_time = time.time() - start_time
 		if elapsed_time > 60*config.wait_order:
 			if _type == 'sell':
-				records['money_fees'] = records['money_fees'] + float(data['price'])*float(data['amount'])*0.001*fee_scale
+				records['money_fees'] = records['money_fees'] + float(data['price'])*float(data['amount'])*calculated_fee
 			else:
-				records['goods_fees'] = records['goods_fees'] + float(data['amount'])*0.001*fee_scale
+				records['goods_fees'] = records['goods_fees'] + float(data['amount'])*calculated_fee
 			return 'timeout'
 
 		if index < 3:
