@@ -292,13 +292,22 @@ def update_balance():
 	logging.info('cet_available: %0.3f' % records['cet_available'])
 	logging.info('money_available: %0.3f' % records['money_available'])
 
+def factorForFeeCalculation():
+	retVal = 1
+	if config.cet_as_fee:
+		retVal = retVal * 1 #please fix
+	if config.VIP_membership != 1:
+		retVal = retVal * VIP_Redcution(config.VIP_membership)*VIP_Redcution(config.VIP_membership)*100
+	return retVal
+
+
 def record_mined_cet():
 	if records['predict_cet'] == 0:
 		return
 
 	cur_hour = time.strftime("%Y-%m-%d %H", time.localtime())
 
-	item = '%s mined %0.3f CET\r\n' % (cur_hour,records['predict_cet']*VIP_Redcution(config.VIP_membership)*VIP_Redcution(config.VIP_membership)*100)
+	item = '%s mined %0.3f CET\r\n' % (cur_hour,float(records['predict_cet'])*factorForFeeCalculation())
 	logging.info(send_message(item))
 		
 	with open('records.txt', 'a+') as f:
