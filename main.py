@@ -298,7 +298,7 @@ def record_mined_cet():
 
 	cur_hour = time.strftime("%Y-%m-%d %H", time.localtime())
 
-	item = '%s mined %0.3f CET\r\n' % (cur_hour,records['predict_cet'])
+	item = '%s mined %0.3f CET\r\n' % (cur_hour,records['predict_cet']*VIP_Redcution(config.VIP_membership)*VIP_Redcution(config.VIP_membership)*100)
 	logging.info(send_message(item))
 		
 	with open('records.txt', 'a+') as f:
