@@ -28,8 +28,6 @@
 
 	"cet_as_fee" : false,
 
-	"VIP_membership" : "1",
-
 	"telegram_notify" : false,
 
 	"telegram_chatid" : "12345",

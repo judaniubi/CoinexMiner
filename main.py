@@ -78,23 +78,11 @@ def calculate_variance(_private_api):
 
 	return _variance
 
-def VIP_Redcution(VIPStatus):
-		return {
-				'1' : 1.0,
-				'VIP1' : 0.2,
-				'VIP2' : 0.5,
-				'VIP3' : 0.8,
-		}[VIPStatus]
-
-def calculate_fee(fee):
-	
-	fee_scale = 1.0
-
+def get_fee_reduction():
+	fee_reduction = 1.0
 	if config.cet_as_fee:
-		fee_scale = 0.5
-		
-	fee_scale = fee_scale * VIP_Redcution(config.VIP_membership)
-	return fee*fee_scale
+		fee_reduction = 0.5
+	return fee_reduction
 
 def check_order_state(_type,data):
 	data = data['data']
@@ -107,14 +95,14 @@ def check_order_state(_type,data):
 
 	index = 0
 
-	calculated_fee = calculate_fee(0.001)
+	fee_reduction = get_fee_reduction()
 	
 	while True:
 		if left_amout == 0 or left_amout <= config.ignore_amount:
 			if _type == 'sell':
-				records['money_fees'] = records['money_fees'] + float(data['price'])*float(data['amount'])*calculated_fee
+				records['money_fees'] = records['money_fees'] + float(data['price'])*float(data['amount'])*float(data['maker_fee_rate'])*fee_reduction
 			else:
-				records['goods_fees'] = records['goods_fees'] + float(data['amount'])*calculated_fee
+				records['goods_fees'] = records['goods_fees'] + float(data['amount'])*float(data['taker_fee_rate'])*fee_reduction
 
 			total_money = tmp_data['tprice_goods_money'] * records['goods_fees']
 			total_money = total_money + records['money_fees']
@@ -142,9 +130,9 @@ def check_order_state(_type,data):
 		elapsed_time = time.time() - start_time
 		if elapsed_time > 60*config.wait_order:
 			if _type == 'sell':
-				records['money_fees'] = records['money_fees'] + float(data['price'])*float(data['amount'])*calculated_fee
+				records['money_fees'] = records['money_fees'] + float(data['price'])*float(data['amount'])*float(data['maker_fee_rate'])*fee_reduction
 			else:
-				records['goods_fees'] = records['goods_fees'] + float(data['amount'])*calculated_fee
+				records['goods_fees'] = records['goods_fees'] + float(data['amount'])*float(data['taker_fee_rate'])*fee_reduction
 			return 'timeout'
 
 		if index < 3:
@@ -292,13 +280,14 @@ def update_balance():
 	logging.info('cet_available: %0.3f' % records['cet_available'])
 	logging.info('money_available: %0.3f' % records['money_available'])
 
+
 def record_mined_cet():
 	if records['predict_cet'] == 0:
 		return
 
 	cur_hour = time.strftime("%Y-%m-%d %H", time.localtime())
 
-	item = '%s mined %0.3f CET\r\n' % (cur_hour,records['predict_cet'])
+	item = '%s mined %0.3f CET\r\n' % (cur_hour,float(records['predict_cet']))
 	logging.info(send_message(item))
 		
 	with open('records.txt', 'a+') as f:
