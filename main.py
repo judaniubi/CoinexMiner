@@ -78,11 +78,6 @@ def calculate_variance(_private_api):
 
 	return _variance
 
-def get_fee_reduction():
-	fee_reduction = 1.0
-	if config.cet_as_fee:
-		fee_reduction = 0.5
-	return fee_reduction
 
 def check_order_state(_type,data):
 	data = data['data']
@@ -95,14 +90,13 @@ def check_order_state(_type,data):
 
 	index = 0
 
-	fee_reduction = get_fee_reduction()
 	
 	while True:
 		if left_amout == 0 or left_amout <= config.ignore_amount:
 			if _type == 'sell':
-				records['money_fees'] = records['money_fees'] + float(data['price'])*float(data['amount'])*float(data['maker_fee_rate'])*fee_reduction
+				records['money_fees'] = records['money_fees'] + float(data['price'])*float(data['amount'])*float(data['maker_fee_rate'])
 			else:
-				records['goods_fees'] = records['goods_fees'] + float(data['amount'])*float(data['taker_fee_rate'])*fee_reduction
+				records['goods_fees'] = records['goods_fees'] + float(data['amount'])*float(data['taker_fee_rate'])
 
 			total_money = tmp_data['tprice_goods_money'] * records['goods_fees']
 			total_money = total_money + records['money_fees']
@@ -130,9 +124,9 @@ def check_order_state(_type,data):
 		elapsed_time = time.time() - start_time
 		if elapsed_time > 60*config.wait_order:
 			if _type == 'sell':
-				records['money_fees'] = records['money_fees'] + float(data['price'])*float(data['amount'])*float(data['maker_fee_rate'])*fee_reduction
+				records['money_fees'] = records['money_fees'] + float(data['price'])*float(data['amount'])*float(data['maker_fee_rate'])
 			else:
-				records['goods_fees'] = records['goods_fees'] + float(data['amount'])*float(data['taker_fee_rate'])*fee_reduction
+				records['goods_fees'] = records['goods_fees'] + float(data['amount'])*float(data['taker_fee_rate'])
 			return 'timeout'
 
 		if index < 3:
