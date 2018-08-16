@@ -90,13 +90,18 @@ def check_order_state(_type,data):
 
 	index = 0
 
+	fee_scale = 1.0
+
+	if config.cet_as_fee:
+		fee_scale = 0.5
+
 	
 	while True:
 		if left_amout == 0 or left_amout <= config.ignore_amount:
 			if _type == 'sell':
-				records['money_fees'] = records['money_fees'] + float(data['price'])*float(data['amount'])*float(data['maker_fee_rate'])
+				records['money_fees'] = records['money_fees'] + float(data['price'])*float(data['amount'])*float(data['maker_fee_rate'])*fee_scale
 			else:
-				records['goods_fees'] = records['goods_fees'] + float(data['amount'])*float(data['taker_fee_rate'])
+				records['goods_fees'] = records['goods_fees'] + float(data['amount'])*float(data['taker_fee_rate'])*fee_scale
 
 			total_money = tmp_data['tprice_goods_money'] * records['goods_fees']
 			total_money = total_money + records['money_fees']
@@ -124,9 +129,9 @@ def check_order_state(_type,data):
 		elapsed_time = time.time() - start_time
 		if elapsed_time > 60*config.wait_order:
 			if _type == 'sell':
-				records['money_fees'] = records['money_fees'] + float(data['price'])*float(data['amount'])*float(data['maker_fee_rate'])
+				records['money_fees'] = records['money_fees'] + float(data['price'])*float(data['amount'])*float(data['maker_fee_rate'])*fee_scale
 			else:
-				records['goods_fees'] = records['goods_fees'] + float(data['amount'])*float(data['taker_fee_rate'])
+				records['goods_fees'] = records['goods_fees'] + float(data['amount'])*float(data['taker_fee_rate'])*fee_scale
 			return 'timeout'
 
 		if index < 3:
