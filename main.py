@@ -300,7 +300,7 @@ def balance_cost():
 
 	_money_cast_buy_goods = amount * price
 
-	if config.money == 'CET'
+	if config.money == 'CET':
 		pass
 	else:  
 		money_markets = 'CET' + config.money
