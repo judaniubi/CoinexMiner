@@ -40,6 +40,8 @@
 
 	"goods" : "CDY",
 
-	"money" : "BCH"
+	"money" : "BCH",
+
+	"difficulty" : 50
 }
 

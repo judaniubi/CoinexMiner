@@ -49,3 +49,6 @@ skip_ratio = data['skip_ratio']
 
 cet_as_fee = data['cet_as_fee']
 
+difficulty = data['difficulty']
+
+

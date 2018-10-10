@@ -224,26 +224,13 @@ def digging():
 		time.sleep(0.05)
 
 def need_pause():
-	data = ''
-	try:
-		data = _private_api.get_difficulty()
-	except Exception as e:
-		logging.error(str(e))
-		logging.info('need_pause failed try again 1')
-		time.sleep(10)
-		try:
-			data = _private_api.get_difficulty()
-		except Exception as e:
-			logging.error(str(e))
-			logging.info('need_pause failed try again 2')
-			time.sleep(5*60)
-			data = _private_api.get_difficulty()
-	
-	data = data['data']
 
-	difficulty = float(data['difficulty'])
-	prediction = float(data['prediction'])
+	difficulty = config.difficulty
+	prediction = records['predict_cet']
 
+
+	if time.gmtime().tm_min == 0:
+		prediction = 0
 
 	if prediction == 0 and tmp_data['prev_api_predict_cet'] > 0.1:
 		#difficult reset now
@@ -257,9 +244,6 @@ def need_pause():
 	tmp_data['prev_api_predict_cet'] = prediction
 
 
-	if prediction > difficulty * config.stop_threshold:
-		logging.info('from api. difficulty %f prediction %0.3f' % (difficulty,prediction))
-		return True
 
 	if records['predict_cet'] > difficulty * config.stop_threshold:
 		logging.info('from self. difficulty %f prediction %0.3f' % (difficulty,records['predict_cet']))
