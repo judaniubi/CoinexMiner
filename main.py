@@ -28,11 +28,14 @@ tmp_data['tprice_goods_money'] = 0
 tmp_data['prev_api_predict_cet'] = 0.1
 
 def get_self_cet_prediction():
-	money_markets = 'CET' + config.money
-	data = _private_api.get_ticker(money_markets)
-	data = data['data']
-	tmp_data['tprice_cet_money'] = float(data['ticker']['buy'])
-	
+	if config.money == 'CET':
+		tmp_data['tprice_cet_money'] = 1.0
+	else:
+		money_markets = 'CET' + config.money
+		data = _private_api.get_ticker(money_markets)
+		data = data['data']
+		tmp_data['tprice_cet_money'] = float(data['ticker']['buy'])
+		
 	goods_markets = config.market
 	data = _private_api.get_ticker(goods_markets)
 	data = data['data']
@@ -297,15 +300,20 @@ def balance_cost():
 
 	_money_cast_buy_goods = amount * price
 
-	money_markets = 'CET' + config.money
-	logging.info('need buy %s: %0.3f' % (config.money,records['money_fees']))
-	data = _private_api.get_ticker(money_markets)
-	data = data['data']
-	price = float(data['ticker']['buy'])
-	amount = (records['money_fees'] + _money_cast_buy_goods) / price
-	logging.info('sell %0.3f at %f %s' % (amount,price,money_markets))
-	if not config.cet_as_fee:
-		_private_api.sell(amount,price,money_markets)
+	if config.money == 'CET'
+		pass
+	else:  
+		money_markets = 'CET' + config.money
+		logging.info('need buy %s: %0.3f' % (config.money,records['money_fees']))
+		data = _private_api.get_ticker(money_markets)
+		data = data['data']
+		price = float(data['ticker']['buy'])
+		amount = (records['money_fees'] + _money_cast_buy_goods) / price
+		logging.info('sell %0.3f at %f %s' % (amount,price,money_markets))
+		if not config.cet_as_fee:
+			_private_api.sell(amount,price,money_markets)
+
+
 	records['money_fees'] = 0
 	
 	record_mined_cet()
